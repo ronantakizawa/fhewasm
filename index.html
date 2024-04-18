@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FHE Example</title>
+    <script src="seal_wasm.js"></script>
+</head>
+<body>
+    <input id="num1" type="number" placeholder="Enter a number">
+    <input id="num2" type="number" placeholder="Enter another number">
+    <button onclick="encryptAndAdd()">Encrypt and Add</button>
+
+    <p>Sum of Digits: <span id="sumDigits"></span></p>
+    <p>Encrypted Hash of Number 1: <span id="hashNum1"></span></p>
+    <p>Encrypted Hash of Number 2: <span id="hashNum2"></span></p>
+    <p>Encrypted Hash of Sum: <span id="hashSum"></span></p>
+    <p>Decrypted Result of Addition: <span id="decryptedSum"></span></p>
+
+    <script>
+        var sealModule;
+
+        Module.onRuntimeInitialized = async function() {
+            sealModule = Module;
+            sealModule._initialize_seal();
+            console.log('SEAL module loaded and initialized');
+        };
+
+        function encryptAndAdd() {
+            if (!sealModule) {
+                console.error('SEAL module is not yet initialized');
+                return;
+            }
+            
+            let num1 = parseInt(document.getElementById('num1').value);
+            let num2 = parseInt(document.getElementById('num2').value);
+            let sum = num1 + num2;
+            
+            let sumDigits = num1.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0) +
+                            num2.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+            document.getElementById('sumDigits').textContent = sumDigits;
+
+            let encrypted1 = sealModule._encrypt_integer(num1);
+            let encrypted2 = sealModule._encrypt_integer(num2);
+            let encryptedSum = sealModule._encrypt_integer(sum);
+            
+            let hashNum1 = sealModule._hash_encrypted(encrypted1);
+            let hashNum2 = sealModule._hash_encrypted(encrypted2);
+            let hashSum = sealModule._hash_encrypted(encryptedSum);
+
+            document.getElementById('hashNum1').textContent = hashNum1;
+            document.getElementById('hashNum2').textContent = hashNum2;
+            document.getElementById('hashSum').textContent = hashSum;
+
+            let resultId = sealModule._add_encrypted_numbers(encrypted1, encrypted2);
+            let decryptedResult = sealModule._decrypt_result(resultId);
+            document.getElementById('decryptedSum').textContent = decryptedResult;
+            
+            sealModule._free_ciphertext(encrypted1);
+            sealModule._free_ciphertext(encrypted2);
+            sealModule._free_ciphertext(resultId);
+        }
+    </script>
+    
+</body>
+</html>
