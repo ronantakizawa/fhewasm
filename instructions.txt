@@ -1,0 +1,15 @@
+Created a config.h file in utils, changed dfines.h and uintarith.h.
+Setup emsdk first
+
+1. Setup emsdk first
+2. Setup WASM build config
+3. Create config.h file
+4. Run this file
+
+
+emcc -O3 -s WASM=1 \
+-s EXPORTED_FUNCTIONS='["_initialize_seal", "_encrypt_integer", "_add_encrypted_numbers", "_decrypt_result", "_free_ciphertext"]' \
+-s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
+-I/Users/ronantakizawa/Documents/projects/gofhe/sealwasm/SEAL/native/src \
+/Users/ronantakizawa/Documents/projects/gofhe/sealwasm/SEAL/lib/libseal-4.1.a \
+main.cpp -o seal_wasm.js
