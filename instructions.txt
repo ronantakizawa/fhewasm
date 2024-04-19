@@ -8,7 +8,7 @@ Setup emsdk first
 
 
 emcc -O3 -s WASM=1 \
--s EXPORTED_FUNCTIONS='["_initialize_seal", "_get_public_key", "_get_private_key", "_serialize_encrypted_data", "_encrypt_integer", "_add_encrypted_numbers", "_decrypt_result", "_free_ciphertext"]' \
+-s EXPORTED_FUNCTIONS='["_initialize_seal", "_get_public_key", "_get_private_key", "_serialize_encrypted_data", "_encrypt_integer", "_add_encrypted_numbers", "_decrypt_result", "_clear_all_data"]' \
 -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s INITIAL_MEMORY=536870912 \
