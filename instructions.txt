@@ -9,9 +9,10 @@ Setup emsdk first
 
 
 emcc -O3 -s WASM=1 \
--s EXPORTED_FUNCTIONS='["_initialize_seal", "_get_public_key", "_get_private_key", "_serialize_encrypted_data", "_encrypt_integer", "_add_encrypted_numbers", "_decrypt_result", "_clear_all_data", "_get_private_key_length"]' \
+-s EXPORTED_FUNCTIONS='["_initialize_seal", "_get_public_key", "_get_private_key", "_serialize_encrypted_data", "_encrypt_integer", "_add_encrypted_numbers", "_decrypt_result", "_clear_all_data", "_get_private_key_length", "_get_serialized_ciphertext", "_get_ciphertext_length"]' \
 -s EXPORTED_RUNTIME_METHODS='["cwrap", "ccall", "getValue", "setValue", "HEAP8", "HEAPU8"]' \
 -s ALLOW_MEMORY_GROWTH=1 \
--I/Users/ronantakizawa/Documents/projects/gofhe/sealwasm/SEAL/native/src \
-/Users/ronantakizawa/Documents/projects/gofhe/sealwasm/SEAL/lib/libseal-4.1.a \
+-I./native/src \
+./lib/libseal-4.1.a \
 main.cpp -o seal_wasm.js
+
